@@ -1,4 +1,6 @@
-fn main() {
+use std::io::Write;
+
+fn main() -> std::io::Result<()> {
     //let mut first_two_lines;
     let day_numbers = [
         "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth",
@@ -18,16 +20,23 @@ fn main() {
         "Eleven pipers piping,",
         "Twelve drummers drumming,",
     ];
+
     for i in 0..12 {
-        println!("On the {} day of christmas,", day_numbers[i]);
-        println!("my true love gave to me");
+        let mut text = Vec::new();
+        write!(
+            &mut text,
+            "On the {} day of christmas,\nmy true love gave to me\n",
+            day_numbers[i]
+        )?;
         if i == 0 {
-            println!("A partridge in a pear tree.")
+            write!(&mut text, "A partridge in a pear tree.\n")?
         } else {
             for i2 in (0..=i).rev() {
-                println!("{}", gifts[i2]);
+                write!(&mut text, "{}\n", gifts[i2])?;
             }
         }
-        println!()
+        println!("{}", String::from_utf8_lossy(&text));
     }
+
+    Ok(())
 }
